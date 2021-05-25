@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Sterling.Core\Crawling.Sterling.Core.csproj" />
+    <ProjectReference Include="..\..\..\src\Sterling.Crawling\Crawling.Sterling.csproj" />
+    <ProjectReference Include="..\..\..\src\Sterling.Infrastructure\Crawling.Sterling.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>

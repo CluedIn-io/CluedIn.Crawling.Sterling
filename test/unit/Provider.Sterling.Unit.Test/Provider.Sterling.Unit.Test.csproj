@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Sterling.Provider\Provider.Sterling.csproj" />
+  </ItemGroup>
+</Project>
