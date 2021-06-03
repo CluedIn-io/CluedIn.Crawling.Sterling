@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <None Remove="Resources\sterling.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Sterling.Infrastructure\Crawling.Sterling.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -13,5 +16,8 @@
     <PackageReference Include="CluedIn.Core.Agent" />
     <PackageReference Include="CluedIn.Server.Common.WebApi" />
     <PackageReference Include="CluedIn.Agent" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sterling.png" />
   </ItemGroup>
 </Project>

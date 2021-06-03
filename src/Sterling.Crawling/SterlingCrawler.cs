@@ -23,8 +23,33 @@ namespace CluedIn.Crawling.Sterling
 
             var client = clientFactory.CreateNew(sterlingcrawlJobData);
 
-            //retrieve data from provider and yield objects
-            
-        }       
+            foreach (var package in client.GetPackages())
+            {
+                yield return package;
+            }
+
+            foreach (var candidateId in sterlingcrawlJobData.CandidateIds)
+            {
+                foreach (var candidate in client.GetCandidates(candidateId))
+                {
+                    yield return candidate;
+                    foreach(var screeningId in candidate.ScreeningIds)
+                    {
+                        yield return client.GetScreenings(screeningId.ToString());
+                        yield return client.GetScreeningReports(screeningId.ToString());
+                    }
+                }
+            }
+
+            foreach (var package in client.GetBillCodes())
+            {
+                yield return package;
+            }
+
+            foreach (var identifyVerificationId in sterlingcrawlJobData.IdentifyVerificationIds)
+            {
+                yield return client.GetIdentifyVerification(identifyVerificationId.ToString());
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CluedIn.Core.Data;
 using CluedIn.Core.Net.Mail;
 using CluedIn.Core.Providers;
 
@@ -10,18 +11,23 @@ namespace CluedIn.Crawling.Sterling.Core
         public struct KeyName
         {
             public const string ApiKey = nameof(ApiKey);
+            public const string CandidateIds = nameof(CandidateIds);
+            public const string IdentifyVerificationIds = nameof(IdentifyVerificationIds);
         }
+
+        public const string Candidate = "/Candidate";
+        public const string Screening = "/Screening";
 
         // TODO Complete the following section
         // Please see https://cluedin-io.github.io/CluedIn.Documentation/docs/1-Integration/build-integration.html
-        public const string CrawlerDescription = "Sterling is a ... to be completed ...";
+        public const string CrawlerDescription = "Sterling is a candidate background-check manager";
         public const string Instructions = "Provide authentication instructions here, if applicable";
         public const IntegrationType Type = IntegrationType.Cloud;
-        public const string Uri = "http://www.sampleurl.com"; //Uri of remote tool if applicable
+        public const string Uri = "https://www.sterlingcheck.com/"; //Uri of remote tool if applicable
 
         // To change the icon see embedded resource
         // src\Sterling.Provider\Resources\cluedin.png
-        public const string IconResourceName = "Resources.cluedin.png";
+        public const string IconResourceName = "Resources.sterling.png";
 
         public static IList<string> ServiceType = new List<string> { "" };
         public static IList<string> Aliases = new List<string> { "" };
@@ -31,14 +37,13 @@ namespace CluedIn.Crawling.Sterling.Core
         {
             token = new Control[]
             {
-        // You can define controls to show in the GUI in order to authenticate with this integration
-        //        new Control()
-        //        {
-        //            displayName = "API key",
-        //            isRequired = false,
-        //            name = "api",
-        //            type = "text"
-        //        }
+                new Control()
+                {
+                    displayName = "API key",
+                    isRequired = false,
+                    name = "ApiKey",
+                    type = "text"
+                }
             }
         };
 
@@ -59,9 +64,6 @@ namespace CluedIn.Crawling.Sterling.Core
         public static readonly Guid ProviderId = Guid.Parse("ed9b29b1-f4c7-42ca-b4a9-bd325c775f0a");
         public const string ProviderName = "Sterling";
 
-        
-
-
         public static readonly ComponentEmailDetails ComponentEmailDetails = new ComponentEmailDetails
         {
             Features = new Dictionary<string, string>
@@ -74,6 +76,8 @@ namespace CluedIn.Crawling.Sterling.Core
             ProviderId = ProviderId,
             Webhooks = SupportsWebHooks
         };
+
+   
 
         public static IProviderMetadata CreateProviderMetadata()
         {

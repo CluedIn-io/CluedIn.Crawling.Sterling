@@ -6,6 +6,9 @@ using CluedIn.Crawling.Sterling.Core;
 using Newtonsoft.Json;
 using RestSharp;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using CluedIn.Crawling.Sterling.Core.Models;
+using System.Linq;
 
 namespace CluedIn.Crawling.Sterling.Infrastructure
 {
@@ -42,29 +45,61 @@ namespace CluedIn.Crawling.Sterling.Infrastructure
             client.AddDefaultParameter("api_key", sterlingCrawlJobData.ApiKey, ParameterType.QueryString);
         }
 
-        private async Task<T> GetAsync<T>(string url)
+        public IEnumerable<Package> GetPackages()
         {
-            var request = new RestRequest(url, Method.GET);
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("packages", Method.GET);
+            var results = client.Get<List<Package>>(request);
+            return results.Data;
+        }
 
-            var response = await client.ExecuteAsync(request, request.Method);
+        public IEnumerable<Candidate> GetCandidates(string candidateId)
+        {
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("candidates", Method.GET);
+            var results = client.Get<List<Candidate>>(request);
+            return results.Data;
+        }
 
-            if (response.StatusCode != HttpStatusCode.OK)
-            {
-                var diagnosticMessage = $"Request to {client.BaseUrl}{url} failed, response {response.ErrorMessage} ({response.StatusCode})";
-                log.LogError(diagnosticMessage);
-                throw new InvalidOperationException($"Communication to jsonplaceholder unavailable. {diagnosticMessage}");
-            }
+        public IEnumerable<Screening> GetScreenings(string screeningId)
+        {
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("screenings", Method.GET);
+            var results = client.Get<List<Screening>>(request);
+            return results.Data;
+        }
 
-            var data = JsonConvert.DeserializeObject<T>(response.Content);
+        public IEnumerable<Screening> GetScreeningReports(string screeningId)
+        {
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("screenings/" + screeningId + "/reports", Method.GET);
+            var results = client.Get<List<Screening>>(request);
+            return results.Data;
+        }
 
-            return data;
+        public IEnumerable<string> GetBillCodes()
+        {
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("bill-codes", Method.GET);
+            var results = client.Get<BillCode>(request);
+            return results.Data.BillCodes;
+        }
+
+        public IdentifyVerification GetIdentifyVerification(string identifyVerificationId)
+        {
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("identity-verification/" + identifyVerificationId, Method.GET);
+            var results = client.Get<IdentifyVerification>(request);
+            return results.Data;
         }
 
         public AccountInformation GetAccountInformation()
         {
-            //TODO - return some unique information about the remote data source
-            // that uniquely identifies the account
-            return new AccountInformation("", "");
+            var client = new RestClient("https://api.us.int.sterlingcheck.app/v2");
+            var request = new RestRequest("account", Method.GET);
+            var results = client.Get<List<Account>>(request);
+
+            return new AccountInformation(results.Data.First().AccountId, results.Data.First().AccountName);
         }
     }
 }

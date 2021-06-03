@@ -39,7 +39,21 @@ namespace CluedIn.Provider.Sterling
 
             var sterlingCrawlJobData = new SterlingCrawlJobData();
             if (configuration.ContainsKey(SterlingConstants.KeyName.ApiKey))
-            { sterlingCrawlJobData.ApiKey = configuration[SterlingConstants.KeyName.ApiKey].ToString(); }
+            {
+                sterlingCrawlJobData.ApiKey = configuration[SterlingConstants.KeyName.ApiKey].ToString();
+            }
+
+            if (configuration.ContainsKey(SterlingConstants.KeyName.CandidateIds))
+            {
+                //Run some search to get the candidateIds from CluedIn.
+                sterlingCrawlJobData.CandidateIds = new List<string>() { };
+            }
+
+            if (configuration.ContainsKey(SterlingConstants.KeyName.IdentifyVerificationIds))
+            {
+                //Run some search to get the identify Verfication from CluedIn.
+                sterlingCrawlJobData.IdentifyVerificationIds = new List<string>() { };
+            }
 
             return await Task.FromResult(sterlingCrawlJobData);
         }
